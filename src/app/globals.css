@@ -1,0 +1,332 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Vietnamese Font Faces (Local embedded TTF from /fonts/) ── */
+@font-face {
+  font-family: 'Anton';
+  src: url('/fonts/Anton-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('/fonts/BeVietnamPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/fonts/Oswald-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/Nunito-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Baloo 2';
+  src: url('/fonts/Baloo2-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/**
+ * Design tokens — Content Automation Hub (Redesign v2)
+ *
+ * Palette: Blue 600 (primary) + Emerald 500 (accent/success)
+ * Mood: Playful & Friendly SaaS — bo tròn nhiều, màu tươi, thân thiện
+ * Mode: Light-only (không dark mode)
+ * Density: 6/10 (thoáng hơn v1, space-y-6, card p-5)
+ * Motion: 5/10 (moderate — hover scale, entry fade, sidebar transition)
+ *
+ * Token architecture: HSL triplets (no hsl() wrapper) → Tailwind opacity modifiers work.
+ * Components only consume semantic tokens.
+ */
+
+@layer base {
+  :root {
+    /* ── Fonts (injected as CSS vars by next/font/google) ────────────────── */
+    --font-sans: ui-sans-serif;
+    --font-mono: ui-monospace;
+
+    /* ── Surfaces ────────────────────────────────────────────────────────── */
+    --background:        210 40% 98%;      /* #F8FAFC — page canvas */
+    --foreground:        222 47% 11%;      /* #1E293B — Slate 900, 16:1 on white */
+    --card:              0 0% 100%;        /* #FFFFFF */
+    --card-foreground:   222 47% 11%;
+    --muted:             210 40% 96%;      /* #F1F5F9 — Slate 100 */
+    --muted-foreground:  215 16% 47%;      /* #64748B — Slate 500, 5.2:1 on white */
+    --border:            214 32% 91%;      /* #E2E8F0 — Slate 200 */
+    --input:             214 32% 91%;
+
+    /* ── Brand — Blue 600 ────────────────────────────────────────────────── */
+    --primary:           221 83% 53%;      /* #3B82F6 — Blue 500, 3.1:1 on white */
+    --primary-foreground: 0 0% 100%;
+    --primary-muted:     214 100% 97%;     /* #EFF6FF — Blue 50 tint */
+    --ring:              221 83% 53%;
+
+    /* ── Accent — Emerald 500 ────────────────────────────────────────────── */
+    --accent:            160 84% 39%;      /* #10B981 */
+    --accent-foreground: 0 0% 100%;
+    --accent-muted:      152 81% 96%;      /* #ECFDF5 — Emerald 50 */
+
+    /* ── Secondary (kept for chart usage) ───────────────────────────────── */
+    --secondary:         221 83% 53%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* ── Status ──────────────────────────────────────────────────────────── */
+    --success:           160 84% 39%;      /* = accent, Emerald 500 */
+    --success-foreground: 0 0% 100%;
+    --success-muted:     152 81% 96%;
+    --warning:           38 92% 50%;       /* #F59E0B — Amber 500 */
+    --warning-foreground: 0 0% 100%;
+    --warning-muted:     48 96% 93%;       /* Amber 50 */
+    --destructive:       0 84% 60%;        /* #EF4444 — Red 500 */
+    --destructive-foreground: 0 0% 100%;
+    --destructive-muted: 0 86% 97%;
+    --info:              221 83% 53%;      /* = primary */
+    --info-foreground:   0 0% 100%;
+    --info-muted:        214 100% 97%;
+
+    /* ── Charts: Blue + Emerald + Amber + Violet + Rose ─────────────────── */
+    --chart-1:           221 83% 53%;      /* Blue */
+    --chart-2:           160 84% 39%;      /* Emerald */
+    --chart-3:           38 92% 50%;       /* Amber */
+    --chart-4:           262 80% 60%;      /* Violet */
+    --chart-5:           340 82% 56%;      /* Rose */
+    --chart-grid:        214 32% 91%;
+
+    /* ── Shape — "Playful Rounded" ───────────────────────────────────────── */
+    --radius-sm:  0.375rem;   /* 6px  — badges, tags */
+    --radius:     0.625rem;   /* 10px — buttons, inputs */
+    --radius-lg:  0.875rem;   /* 14px — cards, dropdowns */
+    --radius-xl:  1.25rem;    /* 20px — modals, large panels */
+
+    /* ── Elevation — Blue-tinted shadows ────────────────────────────────── */
+    --shadow-sm: 0 1px 2px 0 hsl(221 83% 53% / 0.04);
+    --shadow-md: 0 2px 8px -2px hsl(221 83% 53% / 0.08), 0 1px 3px 0 hsl(221 83% 53% / 0.04);
+    --shadow-lg: 0 8px 24px -4px hsl(221 83% 53% / 0.10), 0 2px 6px -2px hsl(221 83% 53% / 0.06);
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Keyboard focus ring — Blue tinted, always visible */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring) / 0.8);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Numeric columns */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Range inputs — consistent cross-browser styling ──────────────────── */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    height: 1.25rem; /* ensures consistent click target */
+  }
+
+  /* Track */
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: hsl(var(--border));
+  }
+  input[type="range"]::-moz-range-track {
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: hsl(var(--border));
+  }
+
+  /* Thumb */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -0.3125rem; /* centre on 6px track: (16-6)/2 */
+    height: 1rem;
+    width: 1rem;
+    border-radius: 9999px;
+    background: hsl(var(--primary));
+    border: 2px solid hsl(var(--card));
+    box-shadow: 0 1px 4px hsl(var(--primary) / 0.3);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+  input[type="range"]::-moz-range-thumb {
+    height: 1rem;
+    width: 1rem;
+    border-radius: 9999px;
+    background: hsl(var(--primary));
+    border: 2px solid hsl(var(--card));
+    box-shadow: 0 1px 4px hsl(var(--primary) / 0.3);
+    transition: transform 150ms ease;
+  }
+
+  input[type="range"]:hover::-webkit-slider-thumb {
+    transform: scale(1.15);
+    box-shadow: 0 2px 8px hsl(var(--primary) / 0.4);
+  }
+  input[type="range"]:hover::-moz-range-thumb {
+    transform: scale(1.15);
+  }
+
+  input[type="range"]:focus-visible {
+    outline: none;
+  }
+  input[type="range"]:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.25), 0 1px 4px hsl(var(--primary) / 0.3);
+  }
+}
+
+@layer utilities {
+  /* Thin scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--border));
+    border-radius: 9999px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground) / 0.4);
+  }
+
+  /* Glass morphism for topbar */
+  .glass {
+    background-color: hsl(var(--card) / 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Inline tab bar — pill style, strong visual affordance ──────────────── */
+  /*
+   * Usage:
+   *   <div class="tab-bar">
+   *     <button class="tab-item" data-active="true">Active Tab</button>
+   *     <button class="tab-item">Inactive</button>
+   *   </div>
+   *
+   * Or apply [aria-selected=true] / data-active for active state.
+   */
+  .tab-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0.25rem;
+    border-radius: 0.75rem; /* rounded-xl */
+    background-color: hsl(var(--muted) / 0.6);
+    border: 1px solid hsl(var(--border));
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+
+  .tab-item {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    height: 2rem;
+    padding: 0 0.75rem;
+    border-radius: 0.5rem; /* rounded-lg */
+    font-size: 0.75rem;    /* text-xs */
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 150ms ease;
+    color: hsl(var(--muted-foreground));
+    background: transparent;
+    border: none;
+    outline: none;
+  }
+
+  .tab-item:hover {
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--card) / 0.7);
+  }
+
+  .tab-item:focus-visible {
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.5);
+  }
+
+  /* Active state — pill with primary background */
+  .tab-item[aria-selected="true"],
+  .tab-item[data-active="true"],
+  .tab-item.active {
+    background-color: hsl(var(--card));
+    color: hsl(var(--primary));
+    font-weight: 600;
+    box-shadow: 0 1px 3px hsl(var(--foreground) / 0.08), 0 0 0 1px hsl(var(--border));
+  }
+}
+
+/* Motion 5/10 — moderate, fully disabled when user prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

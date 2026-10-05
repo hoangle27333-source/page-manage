@@ -1,0 +1,66 @@
+import type { Metadata, Viewport } from "next";
+import { Be_Vietnam_Pro, Fira_Code } from "next/font/google";
+import { Toaster } from "sonner";
+import { AuthProvider } from "@/lib/auth/auth-context";
+import "./globals.css";
+
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ["vietnamese", "latin", "latin-ext"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const firaCode = Fira_Code({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: "Page Manage · Content & Video Automation Hub",
+    template: "%s · Page Manage",
+  },
+  description:
+    "Automated Fanpage Management, Content Calendar, Post Publishing & AI Video Remix Studio.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#F8FAFC",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        suppressHydrationWarning
+        className={`${beVietnamPro.variable} ${firaCode.variable} min-h-screen bg-background font-sans text-foreground antialiased`}
+      >
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            classNames: {
+              toast:
+                "font-sans rounded-[10px] border border-border shadow-md text-sm",
+              success: "border-success/20 bg-success-muted text-foreground",
+              error:   "border-destructive/20 bg-destructive-muted text-foreground",
+              warning: "border-warning/20 bg-warning-muted text-foreground",
+              info:    "border-primary/20 bg-primary-muted text-foreground",
+            },
+          }}
+        />
+      </body>
+    </html>
+  );
+}
